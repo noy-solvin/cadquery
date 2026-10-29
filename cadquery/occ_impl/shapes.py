@@ -7220,6 +7220,10 @@ def fillet(
 
     builder.Build()
 
+    # Issue #2114: Check builder.IsDone() to prevent OCCT segfault on re-entrant Build() inside Shape()
+    if not builder.IsDone():
+        raise ValueError("Fillet failed")
+
     _update_history(history, name, [s, edges], builder)
 
     return _compound_or_shape(builder.Shape())
@@ -7242,6 +7246,10 @@ def chamfer(
         builder.Add(d, el.wrapped)
 
     builder.Build()
+
+    # Issue #2114: Check builder.IsDone() to prevent OCCT segfault on re-entrant Build() inside Shape()
+    if not builder.IsDone():
+        raise ValueError("Chamfer failed")
 
     _update_history(history, name, [s, edges], builder)
 

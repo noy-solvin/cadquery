@@ -1023,6 +1023,22 @@ def test_chamfer():
     assert r.faces(">Z").Area() < 1
 
 
+def test_fillet_failure():
+    b = box(10, 10, 10)
+    with raises(ValueError, match="Fillet failed"):
+        fillet(b, b.edges(), 5)
+    with raises(ValueError, match="Fillet failed"):
+        fillet(b, b.edges(), 5, history=History())
+
+
+def test_chamfer_failure():
+    b = box(10, 10, 10)
+    with raises(ValueError, match="Chamfer failed"):
+        chamfer(b, b.edges(), 5)
+    with raises(ValueError, match="Chamfer failed"):
+        chamfer(b, b.edges(), 5, history=History())
+
+
 def test_extrude():
 
     v = vertex(0, 0, 0)
